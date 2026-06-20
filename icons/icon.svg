@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none">
+  <!-- 书 -->
+  <rect x="16" y="18" width="48" height="60" rx="3" stroke="#c0a0ff" stroke-width="3" fill="#2a1a4a"/>
+  <line x1="40" y1="18" x2="40" y2="78" stroke="#c0a0ff" stroke-width="1.5" opacity="0.5"/>
+  <!-- 文字行 -->
+  <line x1="22" y1="30" x2="36" y2="30" stroke="#8a7abf" stroke-width="2" stroke-linecap="round"/>
+  <line x1="22" y1="38" x2="36" y2="38" stroke="#8a7abf" stroke-width="2" stroke-linecap="round"/>
+  <line x1="22" y1="46" x2="34" y2="46" stroke="#8a7abf" stroke-width="2" stroke-linecap="round"/>
+  <line x1="22" y1="54" x2="36" y2="54" stroke="#8a7abf" stroke-width="2" stroke-linecap="round"/>
+  <line x1="22" y1="62" x2="30" y2="62" stroke="#8a7abf" stroke-width="2" stroke-linecap="round"/>
+  <!-- 右页文字 -->
+  <line x1="44" y1="30" x2="58" y2="30" stroke="#8a7abf" stroke-width="2" stroke-linecap="round"/>
+  <line x1="44" y1="38" x2="58" y2="38" stroke="#8a7abf" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- 聊天气泡（右下角） -->
+  <path d="M56 56h20a4 4 0 014 4v12l-6-5H56a4 4 0 01-4-4V60a4 4 0 014-4z"
+        fill="#4a6ac0" stroke="#6a8ae0" stroke-width="2"/>
+  <!-- AI 眼睛/点 -->
+  <circle cx="64" cy="66" r="2.5" fill="#e0e0ff"/>
+  <circle cx="74" cy="66" r="2.5" fill="#e0e0ff"/>
+</svg>

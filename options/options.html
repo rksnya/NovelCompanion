@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="options.css">
+  <title>Novel Companion 设置</title>
+</head>
+<body>
+  <div class="app">
+    <!-- 侧边栏导航 -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <span class="logo">📖</span>
+        <div>
+          <h2>Novel Companion</h2>
+          <p class="ver">v0.1.0</p>
+        </div>
+      </div>
+      <ul class="nav-list">
+        <li class="nav-item active" data-tab="home">
+          <span class="nav-icon">🏠</span> 首页
+        </li>
+        <li class="nav-item" data-tab="persona">
+          <span class="nav-icon">🎭</span> 人格
+        </li>
+        <li class="nav-item" data-tab="chat">
+          <span class="nav-icon">💬</span> 聊天
+        </li>
+        <li class="nav-item" data-tab="model">
+          <span class="nav-icon">🤖</span> 模型管理
+        </li>
+        <li class="nav-item" data-tab="prompts">
+          <span class="nav-icon">📝</span> Prompt 管理
+        </li>
+        <li class="nav-item" data-tab="books">
+          <span class="nav-icon">📚</span> 读过的书
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <button id="save-all" class="btn-primary">💾 保存全部设置</button>
+        <span id="save-status"></span>
+      </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="content">
+
+      <!-- ======== 首页 ======== -->
+      <section class="tab-panel active" id="tab-home">
+        <div class="home-header">
+          <h2>🏠 首页</h2>
+        </div>
+
+        <!-- 顶部三栏 -->
+        <div class="home-grid-top">
+          <!-- 版本信息 -->
+          <div class="card">
+            <h3>📦 版本信息</h3>
+            <div class="info-rows">
+              <div class="info-row"><span>插件版本</span><span class="badge">v0.1.0</span></div>
+              <div class="info-row"><span>数据存储</span><span class="badge" id="home-storage-size">计算中...</span></div>
+            </div>
+          </div>
+
+          <!-- 插件状态 -->
+          <div class="card">
+            <h3>⚡ 插件状态</h3>
+            <div class="info-rows">
+              <div class="info-row">
+                <span>运行状态</span>
+                <span class="status-badge ok" id="home-running-status">运行中</span>
+              </div>
+              <div class="info-row">
+                <span>AI 连接</span>
+                <span id="home-conn-badge" class="status-badge">未测试</span>
+              </div>
+              <div class="feature-tags" id="home-features">
+                <span class="feature-tag on" id="home-feat-passive">📖 被动评价</span>
+                <span class="feature-tag on" id="home-feat-chat">💬 主动聊天</span>
+                <span class="feature-tag" id="home-feat-memory">🧠 记忆系统</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 快速操作 -->
+          <div class="card">
+            <h3>⚡ 快速操作</h3>
+            <div class="quick-actions">
+              <button id="test-connection" class="btn-sm">🔌 测试 AI 连接</button>
+              <button id="home-clear-memory" class="btn-sm">🧹 清理记忆</button>
+              <button id="home-export" class="btn-sm">📤 导出数据</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 统计卡片：第一行 -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-card-header">📊 总评价次数</div>
+            <div class="stat-card-val" id="home-stat-evals">0</div>
+            <div class="stat-card-sub">AI 主动评价累计</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">💬 对话消息</div>
+            <div class="stat-card-val" id="home-stat-chats">0</div>
+            <div class="stat-card-sub">主动聊天轮数</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">🔤 Token 消耗</div>
+            <div class="stat-card-val" id="home-stat-tokens">0</div>
+            <div class="stat-card-sub" id="home-stat-tokens-rate">累计 token</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">📚 阅读进度</div>
+            <div class="stat-card-val" id="home-stat-progress">0 章</div>
+            <div class="stat-card-sub" id="home-stat-books-sub">0 本书在读</div>
+          </div>
+        </div>
+
+        <!-- 统计卡片：第二行 -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-card-header">📖 累计阅读</div>
+            <div class="stat-card-val" id="home-stat-total-chapters">0</div>
+            <div class="stat-card-sub" id="home-stat-total-chapters-sub">章</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">✍️ 记忆条目</div>
+            <div class="stat-card-val" id="home-stat-memories">0</div>
+            <div class="stat-card-sub">笔记 + 摘要 + 角色</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">🔌 API 调用</div>
+            <div class="stat-card-val" id="home-stat-api-calls">-</div>
+            <div class="stat-card-sub">最近一次状态</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">💾 存储占用</div>
+            <div class="stat-card-val" id="home-stat-storage">-</div>
+            <div class="stat-card-sub" id="home-stat-storage-breakdown"></div>
+          </div>
+        </div>
+
+        <!-- 存储占用详情 -->
+        <div class="card" style="margin-bottom:14px">
+          <h3>💾 存储占用详情</h3>
+          <div class="storage-bars" id="home-storage-bars">
+            <p class="empty-hint">计算中...</p>
+          </div>
+        </div>
+
+        <!-- 底部：日志 + 记忆 -->
+        <div class="home-grid-bottom">
+          <div class="card">
+            <h3>📋 最近日志</h3>
+            <div class="log-container" id="log-container">
+              <p class="empty-hint">暂无日志</p>
+            </div>
+            <button id="clear-logs" class="btn-sm btn-danger-outline mt-8">清空日志</button>
+          </div>
+          <div class="card">
+            <h3>🧠 阅读记忆</h3>
+            <div id="memory-overview" class="detail-text memory-overview">
+              <p class="empty-hint">暂无阅读记忆</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======== 人格 ======== -->
+      <section class="tab-panel" id="tab-persona">
+        <h2>🎭 人格设定</h2>
+        <p class="section-desc">定义 AI 书友的身份和性格，让它更像一个真实的朋友</p>
+
+        <div class="card">
+          <h3>基本信息</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>名字 / 代号</label>
+              <input type="text" id="p-name" placeholder="如：小书虫、阿夜" />
+            </div>
+            <div class="form-group">
+              <label>性别</label>
+              <select id="p-gender">
+                <option value="">不指定</option>
+                <option value="男">男</option>
+                <option value="女">女</option>
+                <option value="保密">保密</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>职业 / 身份</label>
+              <input type="text" id="p-occupation" placeholder="如：大学生、图书管理员、自由职业者" />
+            </div>
+            <div class="form-group">
+              <label>城市</label>
+              <input type="text" id="p-city" placeholder="如：上海、东京、纽约" />
+            </div>
+            <div class="form-group">
+              <label>MBTI</label>
+              <select id="p-mbti">
+                <option value="">不指定</option>
+                <option>INTJ</option><option>INTP</option><option>ENTJ</option><option>ENTP</option>
+                <option>INFJ</option><option>INFP</option><option>ENFJ</option><option>ENFP</option>
+                <option>ISTJ</option><option>ISFJ</option><option>ESTJ</option><option>ESFJ</option>
+                <option>ISTP</option><option>ISFP</option><option>ESTP</option><option>ESFP</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>星座</label>
+              <select id="p-zodiac">
+                <option value="">不指定</option>
+                <option>白羊座</option><option>金牛座</option><option>双子座</option><option>巨蟹座</option>
+                <option>狮子座</option><option>处女座</option><option>天秤座</option><option>天蝎座</option>
+                <option>射手座</option><option>摩羯座</option><option>水瓶座</option><option>双鱼座</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>年龄</label>
+              <input type="text" id="p-age" placeholder="如：24、永远18" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>表达风格</h3>
+          <div class="form-group">
+            <label>说话风格描述</label>
+            <textarea id="p-expression" rows="3" placeholder="如：温柔细腻，偶尔毒舌，喜欢用网络流行语，看到虐的地方会先嘴硬然后偷偷哭..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>语言风格倾向</label>
+            <select id="p-tone">
+              <option value="">自然（默认）</option>
+              <option value="poetic">文艺诗意</option>
+              <option value="sharp">犀利毒舌</option>
+              <option value="cute">软萌可爱</option>
+              <option value="calm">冷静理智</option>
+              <option value="enthusiastic">热情奔放</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>喜欢的表达方式</label>
+            <div class="checkbox-group" id="p-habits">
+              <label><input type="checkbox" value="emoji" /> 经常用 emoji</label>
+              <label><input type="checkbox" value="slang" /> 使用网络流行语</label>
+              <label><input type="checkbox" value="lengthy" /> 喜欢长篇分析</label>
+              <label><input type="checkbox" value="oneshot" /> 一针见血简短回复</label>
+              <label><input type="checkbox" value="meme" /> 偶尔玩梗</label>
+              <label><input type="checkbox" value="acg" /> 二次元用语</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>阅读偏好</h3>
+          <div class="form-group">
+            <label>喜欢的小说类型</label>
+            <input type="text" id="p-genres" placeholder="如：玄幻、推理、言情、科幻" />
+          </div>
+          <div class="form-group">
+            <label>讨厌的元素</label>
+            <input type="text" id="p-dislikes" placeholder="如：水字数、圣母主角、强行降智" />
+          </div>
+          <div class="form-group">
+            <label>看小说时的习惯</label>
+            <textarea id="p-habits-reading" rows="2" placeholder="如：喜欢熬夜看、看到爽的地方会拍大腿、边看边吃零食..."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======== 聊天 ======== -->
+      <section class="tab-panel" id="tab-chat">
+        <h2>💬 聊天设置</h2>
+        <p class="section-desc">控制 AI 书友什么时候说话、怎么说话</p>
+
+        <div class="card">
+          <h3>主动发起对话（被动评价）</h3>
+          <p class="hint">AI 在你阅读时自动判断是否要说话</p>
+          <div class="form-group">
+            <label>说话频率 🌡️</label>
+            <div class="range-row">
+              <span>❄️ 冰霜</span>
+              <input type="range" id="chat-temperature" min="0" max="10" value="5" />
+              <span>🔥 话痨</span>
+            </div>
+            <div class="range-val" id="chat-temp-val">5</div>
+          </div>
+          <div class="form-group">
+            <label>📖 自动记录阅读进度</label>
+            <p class="hint">用户停止滚动后，等几秒自动捕获当前屏幕文字存为笔记。设为 0 禁用。</p>
+            <div class="range-row">
+              <span>禁用</span>
+              <input type="range" id="chat-auto-refresh" min="0" max="30" value="5" />
+              <span>30秒</span>
+            </div>
+            <div class="range-val" id="chat-auto-refresh-val">5秒</div>
+          </div>
+          <div class="form-group">
+            <label>💬 AI 主动说话</label>
+            <p class="hint">用户停止滚动后等几秒，AI 看看当前段落，想说话就自然地说。设为 0 禁用。</p>
+            <div class="range-row">
+              <span>禁用</span>
+              <input type="range" id="chat-proactive-delay" min="0" max="30" value="8" />
+              <span>30秒</span>
+            </div>
+            <div class="range-val" id="chat-proactive-delay-val">8秒</div>
+          </div>
+          <div class="form-group">
+            <label>主动评价 Prompt</label>
+            <textarea id="chat-passive-prompt" rows="8" class="code-area"></textarea>
+            <p class="hint">可用变量：{bookName} {chapterTitle} {chapter} {visibleText} {memoryText}</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>用户发起对话</h3>
+          <p class="hint">当你主动给 AI 发消息时的行为</p>
+          <div class="form-group">
+            <label>对话 System Prompt</label>
+            <textarea id="chat-active-prompt" rows="8" class="code-area"></textarea>
+            <p class="hint">可用变量：{bookName} {chapterTitle} {chapter} {visibleText} {memoryText} {userMessage} {chatHistory}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======== 模型管理 ======== -->
+      <section class="tab-panel" id="tab-model">
+        <div class="model-header">
+          <div>
+            <h2>🤖 模型管理与分配</h2>
+            <p class="section-desc">添加模型厂商，获取模型列表，为不同功能分配模型</p>
+          </div>
+          <div class="model-header-actions">
+            <button id="m-test-all" class="btn-sm">⚡ 测试全部连接</button>
+            <span class="save-badge" id="m-save-badge"></span>
+          </div>
+        </div>
+
+        <!-- 未配置警告 -->
+        <div id="m-warning" class="alert alert-warning" style="display:none">
+          <strong>⚠️ 以下任务未配置模型</strong>
+          <div id="m-warning-text" class="mt-2 text-sm"></div>
+        </div>
+
+        <!-- 标签切换 -->
+        <div class="model-tabs">
+          <button class="model-tab active" data-mtab="providers">🔌 模型厂商设置</button>
+          <button class="model-tab" data-mtab="models">📋 模型列表</button>
+          <button class="model-tab" data-mtab="tasks">⚡ 为模型分配功能</button>
+        </div>
+
+        <!-- ====== 厂商设置 ====== -->
+        <div class="model-panel active" id="mpanel-providers">
+          <!-- 搜索 + 操作栏 -->
+          <div class="provider-toolbar">
+            <div class="provider-search">
+              <svg class="search-icon-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.34-4.34"/></svg>
+              <input type="text" id="m-provider-search" placeholder="搜索厂商名称、URL 或类型..." class="search-input" />
+            </div>
+            <div class="provider-actions">
+              <button id="m-add-provider" class="btn-sm">＋ 添加厂商</button>
+            </div>
+          </div>
+
+          <!-- 厂商表格（桌面端） -->
+          <div class="provider-table-wrap desktop-only">
+            <table class="provider-table">
+              <thead>
+                <tr>
+                  <th class="w-10"></th>
+                  <th>状态</th>
+                  <th>名称</th>
+                  <th>基础 URL</th>
+                  <th>客户端类型</th>
+                  <th class="text-right">最大重试</th>
+                  <th class="text-right">超时(秒)</th>
+                  <th class="text-right">重试间隔</th>
+                  <th class="text-right">操作</th>
+                </tr>
+              </thead>
+              <tbody id="m-provider-tbody">
+                <tr><td colspan="9" class="empty-hint">暂无厂商，点击「添加厂商」开始配置</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 厂商卡片（移动端） -->
+          <div class="mobile-only" id="m-provider-cards"></div>
+
+          <!-- 添加/编辑厂商弹窗 -->
+          <div class="modal-overlay" id="m-provider-modal" style="display:none">
+            <div class="modal">
+              <h3 id="m-modal-title">添加厂商</h3>
+              <div class="form-group"><label>厂商名称</label><input type="text" id="m-prov-name" placeholder="如：DeepSeek、Anthropic" /></div>
+              <div class="form-group"><label>Base URL</label><input type="text" id="m-prov-url" placeholder="https://api.deepseek.com" /></div>
+              <div class="form-group"><label>API Key</label><input type="password" id="m-prov-key" placeholder="sk-..." autocomplete="off" /></div>
+              <div class="form-grid">
+                <div class="form-group"><label>客户端类型</label>
+                  <select id="m-prov-type"><option value="auto">自动检测</option><option value="anthropic">Anthropic</option><option value="openai">OpenAI 兼容</option></select></div>
+                <div class="form-group"><label>最大重试</label><input type="number" id="m-prov-retries" value="3" min="0" max="10" /></div>
+                <div class="form-group"><label>超时(秒)</label><input type="number" id="m-prov-timeout" value="120" min="10" max="600" /></div>
+                <div class="form-group"><label>重试间隔(秒)</label><input type="number" id="m-prov-retry-delay" value="5" min="1" max="60" /></div>
+              </div>
+              <div class="modal-actions">
+                <button id="m-prov-delete" class="btn-sm btn-danger-outline" style="display:none">🗑 删除</button>
+                <button id="m-prov-cancel" class="btn-sm">取消</button>
+                <button id="m-prov-save" class="btn-primary btn-sm">保存</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== 模型列表 ====== -->
+        <div class="model-panel" id="mpanel-models">
+          <div class="provider-toolbar">
+            <div class="provider-search">
+              <svg class="search-icon-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.34-4.34"/></svg>
+              <input type="text" id="m-model-search" placeholder="搜索模型名称..." class="search-input" />
+            </div>
+            <button id="m-fetch-models" class="btn-sm">🔄 从 API 获取模型列表</button>
+          </div>
+          <div class="provider-table-wrap">
+            <table class="provider-table">
+              <thead>
+                <tr><th class="w-10"></th><th>模型 ID</th><th>显示名称</th><th class="text-right w-24">状态</th></tr>
+              </thead>
+              <tbody id="m-model-table-body">
+                <tr><td colspan="4" class="empty-hint">点击「从 API 获取模型列表」加载</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p id="m-model-status" class="hint mt-8"></p>
+        </div>
+
+        <!-- ====== 功能分配 ====== -->
+        <div class="model-panel" id="mpanel-tasks">
+          <div class="card">
+            <h3>为每个功能分配模型</h3>
+            <p class="hint mb-16">不同任务可以指定不同模型。留空则使用当前厂商的默认模型。</p>
+            <div class="task-grid">
+              <div class="task-item">
+                <div class="task-info">
+                  <span class="task-icon">📖</span>
+                  <div><div class="task-name">被动评价</div><div class="task-desc">阅读时分析内容并决定是否说话 · 需要 Function Calling</div></div>
+                </div>
+                <div class="task-select-wrap">
+                  <select id="m-task-passive" class="task-select"><option value="">(默认模型)</option></select>
+                </div>
+              </div>
+              <div class="task-item">
+                <div class="task-info">
+                  <span class="task-icon">💬</span>
+                  <div><div class="task-name">主动聊天</div><div class="task-desc">用户主动发起对话时的回复生成</div></div>
+                </div>
+                <div class="task-select-wrap">
+                  <select id="m-task-chat" class="task-select"><option value="">(默认模型)</option></select>
+                </div>
+              </div>
+              <div class="task-item">
+                <div class="task-info">
+                  <span class="task-icon">📝</span>
+                  <div><div class="task-name">摘要生成</div><div class="task-desc">章节摘要和记忆压缩 · 可用便宜模型</div></div>
+                </div>
+                <div class="task-select-wrap">
+                  <select id="m-task-summary" class="task-select"><option value="">(默认模型)</option></select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>高级选项</h3>
+            <div class="form-grid">
+              <div class="form-group"><label>Max Tokens（被动评价）</label><input type="number" id="m-max-tokens-passive" value="800" min="100" max="4096" /></div>
+              <div class="form-group"><label>Max Tokens（聊天）</label><input type="number" id="m-max-tokens-chat" value="600" min="100" max="4096" /></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======== Prompt 管理 ======== -->
+      <section class="tab-panel" id="tab-prompts">
+        <div class="prompts-header">
+          <div>
+            <h2>📝 Prompt 管理</h2>
+            <p class="section-desc">自定义各个场景的 Prompt 模板 · 可用变量：{bookName} {chapterTitle} {chapter} {visibleText} {memoryText} {userMessage} {chatHistory} {botName}</p>
+          </div>
+          <div class="prompts-actions">
+            <button id="pr-reset-all" class="btn-sm">🔄 全部恢复默认</button>
+          </div>
+        </div>
+
+        <div class="prompts-layout">
+          <!-- 左侧：Prompt 列表 -->
+          <div class="prompts-sidebar">
+            <div class="prompts-search">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.34-4.34"/></svg>
+              <input type="text" id="pr-search" placeholder="搜索 Prompt..." class="search-input" />
+            </div>
+            <div class="prompts-list" id="pr-list">
+              <!-- JS 动态填充 -->
+            </div>
+          </div>
+
+          <!-- 右侧：编辑器 -->
+          <div class="prompts-editor" id="pr-editor-panel">
+            <div class="editor-header">
+              <div class="editor-info">
+                <span class="editor-title" id="pr-editor-title">选择一个 Prompt</span>
+                <span class="editor-badge" id="pr-editor-badge"></span>
+              </div>
+              <div class="editor-meta" id="pr-editor-meta"></div>
+              <div class="editor-desc" id="pr-editor-desc"></div>
+              <div class="editor-actions">
+                <button id="pr-restore" class="btn-sm">↩ 恢复默认</button>
+                <button id="pr-view-default" class="btn-sm">👁 查看默认</button>
+              </div>
+            </div>
+            <div class="editor-body">
+              <div class="code-editor-wrapper">
+                <div class="line-numbers" id="pr-line-numbers"></div>
+                <textarea id="pr-editor" class="code-editor" spellcheck="false"></textarea>
+              </div>
+            </div>
+            <div class="editor-footer">
+              <span id="pr-editor-stats"></span>
+              <span class="hint" id="pr-editor-vars"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 读过的书 -->
+      <section class="tab-panel" id="tab-books">
+        <div class="tab-header"><h2>📚 读过的书</h2><span class="hint">你的阅读历程</span></div>
+
+        <!-- 书籍列表视图 -->
+        <div id="books-list-view">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <button id="books-merge-btn" class="btn-sm btn-danger-outline" style="display:none" title="把选中的书合并到第一本">合并选中</button>
+            <span id="books-merge-hint" style="font-size:11px;color:var(--text-dim);display:none">勾选要合并的书，相同小说的不同分卷会被合并</span>
+          </div>
+          <div id="books-grid" class="books-grid"></div>
+          <p id="books-empty" class="empty-hint" style="display:none">还没有阅读记录。打开一本小说，点击右下角书友按钮开始吧！</p>
+        </div>
+
+        <!-- 单本书详情视图 -->
+        <div id="book-detail-view" style="display:none">
+          <button id="book-detail-back" class="btn-sm">← 返回书单</button>
+          <div id="book-detail-content"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

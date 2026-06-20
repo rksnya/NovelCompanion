@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Novel Companion — AI 书友",
+  "version": "0.1.0",
+  "description": "AI 陪你一起看小说，会吐槽会尖叫会分析伏笔的书友喵",
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "novel-companion@rks.dev",
+      "strict_min_version": "115.0"
+    }
+  },
+
+  "permissions": ["storage"],
+  "host_permissions": ["<all_urls>"],
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "content/extractor.js",
+        "content/chat-ui.js",
+        "content/content.js"
+      ]
+    }
+  ],
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Novel Companion",
+    "default_icon": {
+      "48": "icons/icon.svg",
+      "96": "icons/icon.svg"
+    }
+  },
+
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+
+  "icons": {
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg"
+  }
+}

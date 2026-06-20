@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup">
+    <div class="header">
+      <span class="logo">📖</span>
+      <div>
+        <h1>Novel Companion</h1>
+        <p class="subtitle">AI 书友陪你读小说</p>
+      </div>
+    </div>
+
+    <!-- 开关 -->
+    <div class="section power-section">
+      <div class="power-row">
+        <div class="power-info">
+          <span class="power-label">插件开关</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="power-toggle" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- 快捷信息 -->
+    <div class="section">
+      <div id="quick-stats" class="quick-stats">
+        <p class="empty-hint">加载中...</p>
+      </div>
+    </div>
+
+    <!-- 操作 -->
+    <div class="btn-row">
+      <button id="open-options" class="btn-primary">⚙️ 完整设置</button>
+    </div>
+    <p class="hint" style="text-align:center">
+      或在 <code>about:addons</code> → Novel Companion → 首选项
+    </p>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
